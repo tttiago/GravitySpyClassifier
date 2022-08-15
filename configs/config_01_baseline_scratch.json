@@ -1,0 +1,85 @@
+{
+  "name": "baseline_scratch_new",
+  "method": "grid",
+  "metric": {
+    "name": "combined_f1_time",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "values": [
+        "resnet18",
+        "resnet34"
+      ]
+    },
+    "epochs": {
+      "values": [
+          15
+      ]
+    },
+    "frozen_epochs": {
+      "values": [
+        0
+      ]
+    },
+    "suggest_func": {
+      "values": [
+        "steep"
+      ]
+    },
+    "batch_size": {
+      "values": [
+        64
+      ]
+    },
+    "image_dim": {
+      "values": [
+          140
+      ]
+    },
+    "image_square": {
+      "values": [
+        false
+      ]
+    },
+    "view": {
+      "values": [
+        "single1",
+        "single2",
+        "single3",
+        "single4",
+        "merged",
+        "encoded1234",
+        "encoded124",
+        "encoded123",
+        "encoded134",
+        "encoded234",
+        "encoded14",
+        "encoded13",
+        "encoded12",
+        "encoded24",
+        "encoded23",
+        "encoded34"
+      ]
+    },
+    "tfm_zoom_range": {
+      "values": [0]
+    },
+    "tfm_shift_fraction": {
+      "values": [0]
+    },
+    "transfer_learning": {
+      "values": [
+        false
+      ]
+    },
+    "n_channels": {
+      "values": [
+        1
+      ]
+    },
+    "mixed_precision": {
+      "value": true
+    }
+  }
+}
