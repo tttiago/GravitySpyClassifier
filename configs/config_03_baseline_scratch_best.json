@@ -1,0 +1,68 @@
+{
+  "name": "baseline_scratch_best",
+  "method": "grid",
+  "metric": {
+    "name": "combined_f1_time",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "values": [
+        "resnet18"
+      ]
+    },
+    "view": {
+      "values": [
+        "encoded134"
+      ]
+    },
+    "epochs": {
+      "values": [
+          15
+      ]
+    },
+    "frozen_epochs": {
+      "values": [
+        0
+      ]
+    },
+    "suggest_func": {
+      "values": [
+        "steep"
+      ]
+    },
+    "batch_size": {
+      "values": [
+        64
+      ]
+    },
+    "image_dim": {
+      "values": [
+          140
+      ]
+    },
+    "image_square": {
+      "values": [
+        false
+      ]
+    },
+    "tfm_zoom_range": {
+      "values": [0]
+    },
+    "tfm_shift_fraction": {
+      "values": [0]
+    },
+    "transfer_learning": {
+      "value": false
+    },
+    "mixed_precision": {
+      "value": true
+    },
+    "experiment_no": {
+      "values": [1, 2, 3, 4, 5]
+    },
+    "save_model": {
+      "value": true
+    }
+  }
+}

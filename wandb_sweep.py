@@ -108,10 +108,6 @@ def get_learner(config, dls, n_channels):
     
     if config.get('inference', False) == False:
         cbs.append(WandbCallback(log_model=False, log_preds=False))
-    
-    if config.get('save_model', False):
-        file_name = f"{sweep_id.split('/')[-1]}_run{config.experiment_no}"
-        cbs.append(SaveModelCallback(fname=file_name, monitor='f1_score'))
 
 
     model = model_dict[config.architecture](in_chans=n_channels, num_classes=n_classes,
@@ -158,6 +154,11 @@ def train(config=None):
         best_f1 = max(np.array(learner.recorder.values)[:, -1])
         combined_f1_time = np.array(learner.recorder.values)[-1, -1] - total_runtime / 30000
         combined_bestf1_time = best_f1 - total_runtime / 30000
+        
+        if config.get('save_model', False):
+            file_name = f"{sweep_id.split('/')[-1]}_run{config.experiment_no}"
+            learner.save(file_name)
+        
         wandb.summary["image_size"] = image_size
         wandb.summary["total_runtime"] = total_runtime
         wandb.summary["best_f1"] = best_f1
