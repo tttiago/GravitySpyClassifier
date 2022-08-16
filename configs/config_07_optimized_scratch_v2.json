@@ -1,0 +1,69 @@
+{
+  "name": "optimized_scratch",
+  "method": "bayes",
+  "metric": {
+    "name": "f1_score",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "values": [
+        "resnet18"
+      ]
+    },
+    "epochs": {
+      "distribution": "int_uniform",
+      "min": 8,
+      "max": 30
+    },
+    "frozen_epochs": {
+      "values": [0]
+    },
+    "suggest_func": {
+      "values": ["steep","slide", "valley", "minimum"]
+    },
+    "batch_size": {
+      "values": [32, 64, 128, 256, 512]
+    },
+    "image_dim": {
+      "values": [
+          140
+      ]
+    },
+    "image_square": {
+      "values": [
+        false
+      ]
+    },
+    "view": {
+      "values": [
+        "encoded134"
+      ]
+    },
+    "tfm_zoom_range": {
+      "values": [0]
+    },
+    "tfm_shift_fraction": {
+      "values": [0]
+    },
+    "transfer_learning": {
+      "values": [
+        false
+      ]
+    },
+    "mixed_precision": {
+      "values": [
+        true
+      ]
+    },
+    "experiment_no": {
+        "values": [1]
+    },
+    "weighted_loss": {
+        "values": [false]
+    },
+    "correct_labels": {
+        "value": true
+    }
+  }
+}
