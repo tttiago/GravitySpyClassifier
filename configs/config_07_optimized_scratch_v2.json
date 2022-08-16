@@ -1,5 +1,5 @@
 {
-  "name": "optimized_scratch",
+  "name": "optimized_scratch_v2",
   "method": "bayes",
   "metric": {
     "name": "f1_score",
