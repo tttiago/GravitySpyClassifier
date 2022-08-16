@@ -1,0 +1,58 @@
+{
+  "name": "optimized_scratch_best4",
+  "method": "grid",
+  "metric": {
+    "name": "f1_score",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "value": "resnet18"
+    },
+    "view": {
+      "value": "encoded134"
+    },
+    "batch_size": {
+      "value": 32
+    },
+    "epochs": {
+      "value": 15
+    },
+    "suggest_func": {
+      "value": "minimum"
+    },
+    "image_dim": {
+      "values": [
+          140
+      ]
+    },
+    "image_square": {
+      "values": [
+        false
+      ]
+    },
+    "tfm_zoom_range": {
+      "values": [0]
+    },
+    "tfm_shift_fraction": {
+      "values": [0]
+    },
+    "transfer_learning": {
+      "values": [
+        false
+      ]
+    },
+    "mixed_precision": {
+      "value": true
+    },
+    "correct_labels": {
+        "value": true
+    },
+    "experiment_no": {
+        "values": [1, 2, 3, 4, 5]
+    },
+    "weighted_loss": {
+        "values": [false]
+    }
+  }
+}
