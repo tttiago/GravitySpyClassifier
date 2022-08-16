@@ -1,5 +1,5 @@
 {
-  "name": "optimized_scratch_best5",
+  "name": "optimized_scratch_best6",
   "method": "grid",
   "metric": {
     "name": "f1_score",
