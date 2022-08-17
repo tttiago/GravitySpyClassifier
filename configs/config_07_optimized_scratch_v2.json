@@ -12,9 +12,10 @@
       ]
     },
     "epochs": {
-      "distribution": "int_uniform",
-      "min": 8,
-      "max": 30
+      "distribution": "q_uniform",
+      "min": 9,
+      "max": 30,
+      "q": 3
     },
     "frozen_epochs": {
       "values": [0]

@@ -5,3 +5,4 @@ models/
 wandb/
 wandb_key.txt
 .ipynb_checkpoints/
+Untitled*.ipynb
