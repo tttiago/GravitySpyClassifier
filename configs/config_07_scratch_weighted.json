@@ -1,6 +1,6 @@
 {
-  "name": "optimized_scratch_v2",
-  "method": "bayes",
+  "name": "optimized_scratch_weighted",
+  "method": "grid",
   "metric": {
     "name": "f1_score",
     "goal": "maximize"
@@ -12,19 +12,16 @@
       ]
     },
     "epochs": {
-      "distribution": "q_uniform",
-      "min": 9,
-      "max": 30,
-      "q": 3
+      "values": [15]
     },
     "frozen_epochs": {
       "values": [0]
     },
     "suggest_func": {
-      "values": ["steep","slide", "valley", "minimum"]
+      "values": ["steep"]
     },
     "batch_size": {
-      "values": [32, 64, 128, 256, 512]
+      "values": [32]
     },
     "image_dim": {
       "values": [
@@ -58,10 +55,10 @@
       ]
     },
     "experiment_no": {
-        "values": [1]
+        "values": [1, 2, 3, 4, 5]
     },
     "weighted_loss": {
-        "values": [false]
+        "values": [true, false]
     },
     "correct_labels": {
         "value": true
