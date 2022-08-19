@@ -1,5 +1,5 @@
 {
-  "name": "optimized_baseline_weighted",
+  "name": "optimized_scratch_weighted",
   "method": "grid",
   "metric": {
     "name": "f1_score",
@@ -12,16 +12,16 @@
       ]
     },
     "epochs": {
-      "values": [15]
+      "value": 20
     },
     "frozen_epochs": {
       "values": [0]
     },
     "suggest_func": {
-      "values": ["steep"]
+      "value": "valley"
     },
     "batch_size": {
-      "values": [32]
+      "value": 256 
     },
     "image_dim": {
       "values": [
@@ -60,7 +60,7 @@
         "max": 10
     },
     "weighted_loss": {
-        "values": [true]
+        "value": true
     },
     "save_model": {
       "value": true
