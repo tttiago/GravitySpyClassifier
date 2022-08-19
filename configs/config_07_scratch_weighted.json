@@ -55,7 +55,9 @@
       ]
     },
     "experiment_no": {
-        "values": [1, 2, 3, 4, 5]
+        "distribution": "int_uniform",
+        "min": 1,
+        "max": 10
     },
     "weighted_loss": {
         "values": [true, false]
