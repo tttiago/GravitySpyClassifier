@@ -62,6 +62,9 @@
     "weighted_loss": {
         "values": [true, false]
     },
+    "save_model": {
+      "value": true
+    },
     "correct_labels": {
         "value": true
     }
