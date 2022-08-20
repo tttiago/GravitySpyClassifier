@@ -87,10 +87,18 @@ model_dict = {'resnet18': partial(models.resnet18, zero_init_last=False),
 def get_learner(config, dls, n_channels):
     metrics = [accuracy, F1Score(average="macro")]
     
-    if config.get('weighted_loss', False):
+    weighted_loss = config.get('weighted_loss', False)
+    if weighted_loss:
         filt = dls.train_ds.meta_data['sample_type'].isin(['train', 'validation'])
-        samples_per_class = dict(dls.train_ds.meta_data.loc[filt]['label'].value_counts())
-        class_weights = tensor([max(samples_per_class.values())/n_samples for _, n_samples in sorted(samples_per_class.items())])
+        samples_per_class = tensor(meta_data.loc[filt]['label'].value_counts(sort=False))
+        
+        if weighted_loss == 'inverse':
+            class_weights = 1.0 / samples_per_class
+        elif weighted_loss == 'effective':
+            beta = config.get('weighted_loss_beta', 0.99)
+            class_weights = (1.0 - beta) / (1.0 - torch.pow(beta, samples_per_class)
+        
+        class_weights = class_weights / torch.sum(class_weights) * len(class_weights))
     else:
         class_weights = None
     

@@ -60,7 +60,7 @@
         "max": 10
     },
     "weighted_loss": {
-        "value": true
+        "value": "inverse"
     },
     "save_model": {
       "value": true
