@@ -96,7 +96,7 @@ def get_learner(config, dls, n_channels):
             class_weights = 1.0 / samples_per_class
         elif weighted_loss == 'effective':
             beta = config.get('weighted_loss_beta', 0.99)
-            class_weights = (1.0 - beta) / (1.0 - torch.pow(beta, samples_per_class)
+            class_weights = (1.0 - beta) / (1.0 - torch.pow(beta, samples_per_class))
         
         class_weights = class_weights / torch.sum(class_weights) * len(class_weights))
     else:
