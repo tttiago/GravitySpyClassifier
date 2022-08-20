@@ -1,0 +1,72 @@
+{
+  "name": "optimized_best6_weighted",
+  "method": "grid",
+  "metric": {
+    "name": "f1_score",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "values": [
+        "resnet18"
+      ]
+    },
+    "epochs": {
+      "value": 20
+    },
+    "frozen_epochs": {
+      "values": [0]
+    },
+    "suggest_func": {
+      "value": "valley"
+    },
+    "batch_size": {
+      "value": 256 
+    },
+    "image_dim": {
+      "values": [
+          140
+      ]
+    },
+    "image_square": {
+      "values": [
+        false
+      ]
+    },
+    "view": {
+      "values": [
+        "encoded134"
+      ]
+    },
+    "tfm_zoom_range": {
+      "values": [0]
+    },
+    "tfm_shift_fraction": {
+      "values": [0]
+    },
+    "transfer_learning": {
+      "values": [
+        false
+      ]
+    },
+    "mixed_precision": {
+      "values": [
+        true
+      ]
+    },
+    "experiment_no": {
+        "distribution": "int_uniform",
+        "min": 1,
+        "max": 10
+    },
+    "weighted_loss": {
+        "value": "effective"
+    },
+    "save_model": {
+      "value": true
+    },
+    "correct_labels": {
+        "value": true
+    }
+  }
+}
