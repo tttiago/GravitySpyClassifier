@@ -90,7 +90,7 @@ def get_learner(config, dls, n_channels):
     weighted_loss = config.get('weighted_loss', False)
     if weighted_loss:
         filt = dls.train_ds.meta_data['sample_type'].isin(['train', 'validation'])
-        samples_per_class = tensor(meta_data.loc[filt]['label'].value_counts(sort=False))
+        samples_per_class = tensor(dls.train_ds.meta_data.loc[filt]['label'].value_counts(sort=False))
         
         if weighted_loss == 'inverse':
             class_weights = 1.0 / samples_per_class
