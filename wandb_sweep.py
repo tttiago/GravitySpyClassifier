@@ -81,6 +81,8 @@ model_dict = {'resnet18': partial(models.resnet18, zero_init_last=False),
               'convnext_nano': models.convnext_nano,
               'convnext_tiny': models.convnext_tiny,
               'convnext_small': models.convnext_small,
+              'efficientnetv2_rw_t': models.efficientnetv2_rw_t,
+              'efficientnetv2_s': models.efficientnetv2_s
              }
               
 
