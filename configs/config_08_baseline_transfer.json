@@ -1,0 +1,66 @@
+{
+  "name": "optimized_baseline_transfer",
+  "method": "grid",
+  "metric": {
+    "name": "f1_score",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "values": [
+        "resnet18", "resnet34"
+      ]
+    },
+    "epochs": {
+      "value": 14
+    },
+    "frozen_epochs": {
+      "value": 1
+    },
+    "suggest_func": {
+      "value": "steep"
+    },
+    "batch_size": {
+      "value": 64
+    },
+    "image_dim": {
+      "values": [
+          140
+      ]
+    },
+    "image_square": {
+      "values": [
+        false
+      ]
+    },
+    "view": {
+      "value": "encoded134"
+    },
+    "tfm_zoom_range": {
+      "values": [0]
+    },
+    "tfm_shift_fraction": {
+      "values": [0]
+    },
+    "transfer_learning": {
+      "value": true
+    },
+    "mixed_precision": {
+      "value": true
+    },
+    "experiment_no": {
+        "distribution": "int_uniform",
+        "min": 1,
+        "max": 5
+    },
+    "weighted_loss": {
+        "value": false
+    },
+    "save_model": {
+      "value": false
+    },
+    "correct_labels": {
+        "value": true
+    }
+  }
+}
