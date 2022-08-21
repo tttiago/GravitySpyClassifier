@@ -21,7 +21,7 @@
       "values": ["steep"]
     },
     "batch_size": {
-      "values": [32]
+      "value": 64
     },
     "image_dim": {
       "values": [
