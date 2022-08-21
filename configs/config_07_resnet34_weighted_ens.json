@@ -1,5 +1,5 @@
 {
-  "name": "optimized_best6_weighted_ens",
+  "name": "optimized_resnet34_weighted_ens",
   "method": "grid",
   "metric": {
     "name": "f1_score",
@@ -7,21 +7,19 @@
   },
   "parameters": {
     "architecture": {
-      "values": [
-        "resnet18"
-      ]
+      "value": "resnet34"
     },
     "epochs": {
-      "value": 20
+      "values": [15]
     },
     "frozen_epochs": {
       "values": [0]
     },
     "suggest_func": {
-      "value": "valley"
+      "values": ["steep"]
     },
     "batch_size": {
-      "value": 256 
+      "values": [32]
     },
     "image_dim": {
       "values": [
