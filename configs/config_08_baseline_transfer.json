@@ -33,7 +33,7 @@
       ]
     },
     "image_square": {
-      "value": [false]
+      "value": false
     },
     "view": {
       "value": "encoded134"
