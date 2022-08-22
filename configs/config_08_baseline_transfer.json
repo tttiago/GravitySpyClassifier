@@ -49,18 +49,18 @@
       "value": true
     },
     "experiment_no": {
-        "distribution": "int_uniform",
-        "min": 1,
-        "max": 5
+      "distribution": "int_uniform",
+      "min": 1,
+      "max": 5
     },
     "weighted_loss": {
-        "value": false
-    },
-    "save_model": {
       "value": false
     },
+    "save_model": {
+      "value": true
+    },
     "correct_labels": {
-        "value": true
+      "value": true
     }
   }
 }
