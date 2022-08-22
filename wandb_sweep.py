@@ -122,6 +122,7 @@ def get_learner(config, dls, n_channels):
             class_weights = (1.0 - beta) / (1.0 - torch.pow(beta, samples_per_class))
         
         class_weights = class_weights / torch.sum(class_weights) * len(class_weights)
+        class_weights = class_weights.to(device)
     else:
         class_weights = None
     
@@ -136,7 +137,7 @@ def get_learner(config, dls, n_channels):
         loss_func = LabelSmoothingCrossEntropyFlat(weight=class_weights, eps=label_smoothing)
     elif focal_loss:
         gamma = config.get('focal_loss_gamma', 2.0)
-        loss_func = FocalLossFlat(gamma=gamma, weight=class_weights)
+        loss_func = FocalLossFlat(weight=class_weights, gamma=gamma)
     
     
     cbs = [ShowGraphCallback()]
