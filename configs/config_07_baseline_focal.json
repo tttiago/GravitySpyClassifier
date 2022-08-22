@@ -1,5 +1,5 @@
 {
-  "name": "optimized_baseline_focal",
+  "name": "baseline_focal",
   "method": "grid",
   "metric": {
     "name": "f1_score",
