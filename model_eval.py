@@ -4,18 +4,21 @@ import numpy as np
 from matplotlib import gridspec
 from sklearn import metrics
 
-
-def get_val_preds(learner):
-    """Get predictions and targets for the validation set."""
-    preds, targets = learner.get_preds()
+def get_preds(learner, ds_idx=1):
+    """Get predictions and targets."""
+    preds, targets = learner.get_preds(ds_idx)
     soft_preds = F.softmax(preds.float(), dim=1)
     if targets.ndim > 1:
         y_true = [np.argmax(target) for target in targets]
     else:
         y_true = targets
     y_pred = [np.argmax(pred) for pred in preds]
-    
     return preds, targets, soft_preds, y_true, y_pred
+    
+def get_val_preds(learner):
+    """Deprecated!! Use get_preds instead.
+    Get predictions and targets for the validation set."""
+    return get_preds(learner)
 
 def plot_CM_PR(cm, y_true, y_pred, vocab, figsize=(10, 10)):
     """Plot confusion matrix with precision and recall for each class at the bottom,"""
@@ -78,7 +81,8 @@ def plot_CM_PR(cm, y_true, y_pred, vocab, figsize=(10, 10)):
     return fig, [ax0, ax1]
 
 
-def plot_top_losses_glitches(interp, learner, y_preds=None, largest=True, 
+def plot_top_losses_glitches(interp, learner, ds_idx=1, 
+                             y_preds=None, largest=True, 
                              vocab=None, channel_list=None,
                              show_label=True, show_pred=True, show_loss=False,
                              nrows = 4, ncols=4, figsize=(11, 11)):
@@ -88,19 +92,25 @@ def plot_top_losses_glitches(interp, learner, y_preds=None, largest=True,
         1: '2.0.png',
         2: '4.0.png'
     }
+    
+    if ds_idx == 0:
+        ds = learner.dls.train_ds
+    else:
+        ds = learner.dls.valid_ds
+    
     top_losses = interp.top_losses(nrows*ncols, largest=largest)
     fig, axes = plt.subplots(nrows, ncols, figsize=figsize, sharey=True)
     for i, idx in enumerate(top_losses[1]):
         ax = axes.flat[i]
         idx = int(idx)
-        true_label = vocab[learner.dls.valid_ds[idx][1]]
+        true_label = vocab[ds[idx][1]]
         channel = channel_list[i]
         view_time = float(view_dict[channel][:3])
         freq_pos = np.linspace(-100, 2048, 9)[1:-1]
         freqs = np.logspace(3, 11, num=9, base=2)[1:-1]
         times = np.linspace(-view_time/2, view_time/2, 5)
         
-        img = ax.imshow(learner.dls.valid_ds[idx][0][channel], extent=[-view_time/2,view_time/2,8,2048], aspect=140/170*view_time/2038)
+        img = ax.imshow(ds[idx][0][channel], extent=[-view_time/2,view_time/2,8,2048], aspect=140/170*view_time/2038)
         ax.tick_params(axis='both', which='both', length=0)
         ax.set_xticks(times, [f'{float(time)}' for time in times])
         ax.set_yticks(freq_pos, [f'{freq:.0f}' for freq in freqs]);

@@ -122,6 +122,8 @@ def get_learner(config, dls, n_channels):
             class_weights = (1.0 - beta) / (1.0 - torch.pow(beta, samples_per_class))
         
         class_weights = class_weights / torch.sum(class_weights) * len(class_weights)
+        
+        # Move weights to GPU:
         class_weights = class_weights.to(device)
     else:
         class_weights = None
