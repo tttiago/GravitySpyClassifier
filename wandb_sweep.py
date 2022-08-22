@@ -167,7 +167,7 @@ def train(config=None):
         
         if config.get('save_model', False):
             file_name = f"{sweep_id.split('/')[-1]}_run{config.experiment_no}"
-            learner.save(file_name)
+            learner.save(file_name, with_opt=False)
         
         wandb.summary["image_size"] = image_size
         wandb.summary["total_runtime"] = total_runtime
