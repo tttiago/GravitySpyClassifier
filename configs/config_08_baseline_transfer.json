@@ -2,7 +2,7 @@
   "name": "transfer_baseline",
   "method": "bayes",
   "metric": {
-    "name": "combined_f1_score",
+    "name": "combined_f1_time",
     "goal": "maximize"
   },
   "parameters": {
