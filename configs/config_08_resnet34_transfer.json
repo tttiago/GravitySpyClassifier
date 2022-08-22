@@ -12,13 +12,13 @@
       ]
     },
     "epochs": {
-      "value": 14
+      "value": 8
     },
     "frozen_epochs": {
-      "value": 1
+      "value": 2
     },
     "suggest_func": {
-      "value": "steep"
+      "value": "valley"
     },
     "batch_size": {
       "value": 64
