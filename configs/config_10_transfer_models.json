@@ -13,7 +13,7 @@
         "resnet34",
         "resnet50" 
         "convnext_nano",
-        "convnext_tiny",
+        "convnext_tiny"
       ]
     },
     "epochs": {
