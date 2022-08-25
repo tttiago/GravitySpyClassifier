@@ -9,7 +9,7 @@
     "architecture": {
       "values": [
         "resnet18",
-        "resnet26"  
+        "resnet26" , 
         "resnet34",
         "convnext_nano",
         "convnext_tiny"
