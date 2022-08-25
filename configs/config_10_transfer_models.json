@@ -22,7 +22,7 @@
       "value": 1
     },
     "suggest_func": {
-      "value": ["steep", "valley", "slide", "minimum"]
+      "values": ["steep", "valley", "slide", "minimum"]
     },
     "batch_size": {
       "value": 64
