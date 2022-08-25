@@ -1,6 +1,6 @@
 {
   "name": "transfer_baseline",
-  "method": "bayes",
+  "method": "grid",
   "metric": {
     "name": "combined_f1_time",
     "goal": "maximize"
@@ -8,18 +8,15 @@
   "parameters": {
     "architecture": {
       "values": [
-        "resnet18"
+        "resnet18",
+        "resnet34"
       ]
     },
     "epochs": {
-      "distribution": "int_uniform",
-      "min": 1,
-      "max": 15
+      "values": [4, 9, 14]
     },
     "frozen_epochs": {
-      "distribution": "int_uniform",
-      "min": 1,
-      "max": 5
+      "value": 1
     },
     "suggest_func": {
       "values": ["steep", "valley", "slide", "minimum"]
@@ -27,22 +24,8 @@
     "batch_size": {
       "value": 64
     },
-    "image_dim": {
-      "values": [
-          140
-      ]
-    },
-    "image_square": {
-      "value": false
-    },
     "view": {
       "value": "encoded134"
-    },
-    "tfm_zoom_range": {
-      "values": [0]
-    },
-    "tfm_shift_fraction": {
-      "values": [0]
     },
     "transfer_learning": {
       "value": true
