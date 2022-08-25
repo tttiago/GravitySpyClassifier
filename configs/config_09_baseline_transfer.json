@@ -13,13 +13,13 @@
       ]
     },
     "epochs": {
-      "values": [4, 9, 14]
+      "value": 14
     },
     "frozen_epochs": {
       "value": 1
     },
     "suggest_func": {
-      "values": ["steep", "valley", "slide", "minimum"]
+      "values": "steep"
     },
     "batch_size": {
       "value": 64
@@ -34,13 +34,13 @@
       "value": true
     },
     "experiment_no": {
-      "value": 1
+      "values": [1, 2, 3, 4, 5]
     },
     "weighted_loss": {
       "value": false
     },
     "save_model": {
-      "value": false
+      "value": true
     },
     "correct_labels": {
       "value": true
