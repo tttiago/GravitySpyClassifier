@@ -7,7 +7,7 @@
   },
   "parameters": {
     "architecture": {
-      "value": "resnet18"
+      "value": "resnet34"
     },
     "epochs": {
       "value": 14
