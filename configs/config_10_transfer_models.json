@@ -1,6 +1,6 @@
 {
   "name": "transfer_models",
-  "method": "random",
+  "method": "bayes",
   "metric": {
     "name": "combined_f1_time",
     "goal": "maximize"
@@ -10,7 +10,8 @@
       "values": [
         "resnet18", 
         "resnet26", 
-        "resnet34", 
+        "resnet34",
+        "resnet50" 
         "convnext_nano",
         "convnext_tiny"
       ]
@@ -18,7 +19,7 @@
     "epochs": {
       "distribution": "int_uniform",
       "min": 1,
-      "max": 10
+      "max": 14
     },
     "frozen_epochs": {
       "distribution": "int_uniform",
@@ -26,7 +27,7 @@
       "max": 5
     },
     "suggest_func": {
-      "values": ["steep", "valley", "slide", "minimum"]
+      "values": ["steep", "valley", "minimum"]
     },
     "batch_size": {
       "value": 64
