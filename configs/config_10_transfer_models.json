@@ -1,5 +1,5 @@
 {
-  "name": "transfer_resnet34",
+  "name": "transfer_models",
   "method": "grid",
   "metric": {
     "name": "combined_f1_time",
@@ -7,7 +7,13 @@
   },
   "parameters": {
     "architecture": {
-      "value": "resnet34"
+      "values": [
+        "resnet18",
+        "resnet26"  
+        "resnet34",
+        "convnext_nano",
+        "convnext_tiny"
+      ]
     },
     "epochs": {
       "value": 14
@@ -16,7 +22,7 @@
       "value": 1
     },
     "suggest_func": {
-      "value": "steep"
+      "value": ["steep", "valley", "slide", "minimum"]
     },
     "batch_size": {
       "value": 64
@@ -30,14 +36,11 @@
     "mixed_precision": {
       "value": true
     },
-    "experiment_no": {
-      "values": [1, 2, 3, 4, 5]
-    },
     "weighted_loss": {
       "value": false
     },
     "save_model": {
-      "value": true
+      "value": false
     },
     "correct_labels": {
       "value": true
