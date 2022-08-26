@@ -1,0 +1,53 @@
+{
+  "name": "optimized_transfer",
+  "method": "bayes",
+  "metric": {
+    "name": "combined_f1_time",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "value": "convnext_nano"
+    },
+    "epochs": {
+      "distribution": "int_uniform",
+      "min": 1,
+      "max": 10
+    },
+    "frozen_epochs": {
+      "distribution": "int_uniform",
+      "min": 1,
+      "max": 5
+    },
+    "suggest_func": {
+      "values": ["steep", "valley", "minimum", "slide"]
+    },
+    "batch_size": {
+      "values": [32, 64, 128, 256]
+    },
+    "view": {
+      "value": "encoded134"
+    },
+    "transfer_learning": {
+      "value": true
+    },
+    "mixed_precision": {
+      "value": true
+    },
+    "experiment_no": {
+      "value": 1
+    },
+    "weighted_loss": {
+      "values": [false, "inverse", "effective"]
+    },
+    "focal_loss": {
+      "values": [false, true]
+    },
+    "save_model": {
+      "value": false
+    },
+    "correct_labels": {
+      "value": true
+    }
+  }
+}
