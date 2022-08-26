@@ -11,18 +11,19 @@
         "resnet18",
         "resnet26" , 
         "resnet34",
+        "resnet50",
         "convnext_nano",
         "convnext_tiny"
       ]
     },
     "epochs": {
-      "value": 14
+      "values": [4, 9, 14]
     },
     "frozen_epochs": {
-      "value": 1
+      "values": [1]
     },
     "suggest_func": {
-      "values": ["steep", "valley", "slide", "minimum"]
+      "values": ["steep", "minimum"]
     },
     "batch_size": {
       "value": 64
