@@ -1,13 +1,29 @@
 {
-  "name": "optimized_transfer_best5_augs",
+  "name": "optimized_transfer_augs",
   "method": "bayes",
   "metric": {
-    "name": "f1_score",
+    "name": "combined_f1_time",
     "goal": "maximize"
   },
   "parameters": {
     "architecture": {
       "value": "convnext_nano"
+    },
+    "epochs": {
+      "distribution": "int_uniform",
+      "min": 1,
+      "max": 10
+    },
+    "frozen_epochs": {
+      "distribution": "int_uniform",
+      "min": 1,
+      "max": 5
+    },
+    "suggest_func": {
+      "values": ["steep", "minimum"]
+    },
+    "batch_size": {
+      "values": 64
     },
     "view": {
       "value": "encoded134"
@@ -18,23 +34,11 @@
     "mixed_precision": {
       "value": true
     },
-    "batch_size": {
-      "value": 64
-    },
-    "epochs": {
-      "value": 8
-    },
-    "frozen_epochs": {
-      "value": 2
-    },
-    "suggest_func": {
-      "value": "minimum"
-    },
     "weighted_loss": {
-      "value": "inverse"
+      "values": [false, "inverse", "effective"]
     },
     "focal_loss": {
-      "value": false
+      "values": [false, true]
     },
     "tfm_zoom_range": {
       "distribution": "q_uniform",

@@ -2,7 +2,7 @@
   "name": "optimized_transfer_fast1_augs",
   "method": "bayes",
   "metric": {
-    "name": "combined_f1_time",
+    "name": "f1_score",
     "goal": "maximize"
   },
   "parameters": {
