@@ -1,5 +1,5 @@
 {
-  "name": "optimized_transfer_fast2_augs",
+  "name": "optimized_transfer_fast1_augs",
   "method": "bayes",
   "metric": {
     "name": "combined_f1_time",
@@ -22,13 +22,13 @@
       "value": 64
     },
     "epochs": {
-      "value": 4
+      "value": 5
     },
     "frozen_epochs": {
       "value": 1
     },
     "suggest_func": {
-      "value": "steep"
+      "value": "minimum"
     },
     "weighted_loss": {
       "value": "inverse"
