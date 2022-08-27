@@ -1,5 +1,5 @@
 {
-  "name": "optimized_transfer_best9",
+  "name": "optimized_transfer_fast1",
   "method": "grid",
   "metric": {
     "name": "combined_f1_time",
@@ -22,16 +22,16 @@
       "value": 64
     },
     "epochs": {
-      "value": 4
+      "value": 5
     },
     "frozen_epochs": {
       "value": 1
     },
     "suggest_func": {
-      "value": "steep"
+      "value": "minimum"
     },
     "weighted_loss": {
-      "value": "effective"
+      "value": "inverse"
     },
     "focal_loss": {
       "value": false
