@@ -237,7 +237,7 @@ def parse_args():
         "--num_runs",
         metavar="N",
         nargs="?",
-        type=str,
+        type=int,
         help="Number of runs in the sweep (optional).",
     )
 
