@@ -1,0 +1,55 @@
+{
+  "name": "optimized_transfer_fast1_aug2",
+  "method": "grid",
+  "metric": {
+    "name": "f1_score",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "value": "convnext_nano"
+    },
+    "view": {
+      "value": "encoded134"
+    },
+    "transfer_learning": {
+      "value": true
+    },
+    "mixed_precision": {
+      "value": true
+    },
+    "batch_size": {
+      "value": 64
+    },
+    "epochs": {
+      "value": 5
+    },
+    "frozen_epochs": {
+      "value": 1
+    },
+    "suggest_func": {
+      "value": "minimum"
+    },
+    "weighted_loss": {
+      "value": "inverse"
+    },
+    "focal_loss": {
+      "value": false
+    },
+    "tfm_zoom_range": {
+      "value": 0.015
+    },
+    "tfm_shift_fraction": {
+      "value": 0.085
+    },
+    "experiment_no": {
+      "values": [1, 2, 3, 4, 5]
+    },
+    "save_model": {
+      "value": true
+    },
+    "correct_labels": {
+      "value": true
+    }
+  }
+}
