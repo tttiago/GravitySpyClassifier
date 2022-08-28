@@ -23,7 +23,7 @@
       "values": ["steep", "minimum"]
     },
     "batch_size": {
-      "values": 64
+      "value": 64
     },
     "view": {
       "value": "encoded134"
