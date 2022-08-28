@@ -1,0 +1,42 @@
+{
+  "name": "optimized_scratch_convnext",
+  "method": "bayes",
+  "metric": {
+    "name": "combined_f1_time",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "value": "convnext_nano"
+    },
+    "epochs": {
+      "distribution": "int_uniform",
+      "min": 8,
+      "max": 25
+    },
+    "suggest_func": {
+      "values": ["steep","slide", "valley", "minimum"]
+    },
+    "batch_size": {
+      "values": [32, 64, 128, 256]
+    },
+    "view": {
+      "value": "encoded134"
+    },
+    "transfer_learning": {
+      "value": false
+    },
+    "mixed_precision": {
+      "value": true
+    },
+    "weighted_loss": {
+      "values": [false, "effective", "inverse"]
+    },
+    "focal_loss": {
+      "values": [false, true]
+    },
+    "correct_labels": {
+        "value": true
+    }
+  }
+}
