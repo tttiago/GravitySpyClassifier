@@ -43,7 +43,9 @@
       "value": 0.005
     },
     "experiment_no": {
-      "values": [1, 2, 3, 4, 5]
+      "distribution": "int_uniform",
+      "min": 1,
+      "max": 10
     },
     "save_model": {
       "value": true
