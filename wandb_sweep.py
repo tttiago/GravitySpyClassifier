@@ -92,17 +92,21 @@ def get_dls(config):
     
     # Check if dataset with changed labels is to be used.
     correct_labels = config.get('correct_labels', False)
+    
+    # Use test dataset on final evaluation.
+    valid_data_type = 'validation' if not config.get('test_evaluation', False) else 'test'
 
     ds = Data_GW(
         dataset_path=DATASET_PATH, data_type="train", view=config.view, correct_labels=correct_labels, transform=train_transforms
     )
     ds_val = Data_GW(
-        dataset_path=DATASET_PATH, data_type="validation", view=config.view, correct_labels=correct_labels, transform=valid_transforms
+        dataset_path=DATASET_PATH, data_type=valid_data_type, view=config.view, correct_labels=correct_labels, transform=valid_transforms
     )
-
     dls = DataLoaders.from_dsets(ds, ds_val, bs=config.batch_size, device=device)
 
     return dls, image_size, n_channels              
+
+
 
 def get_learner(config, dls, n_channels):
     """Create the Learner given a configuration and a DataLoaders."""
