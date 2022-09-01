@@ -1,0 +1,54 @@
+{
+  "name": "optimized_transfer_best5",
+  "method": "grid",
+  "metric": {
+    "name": "combined_f1_time",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "value": "convnext_nano"
+    },
+    "view": {
+      "value": "encoded134"
+    },
+    "transfer_learning": {
+      "value": true
+    },
+    "mixed_precision": {
+      "value": true
+    },
+    "batch_size": {
+      "value": 64
+    },
+    "epochs": {
+      "value": 8
+    },
+    "frozen_epochs": {
+      "value": 2
+    },
+    "suggest_func": {
+      "value": "minimum"
+    },
+    "weighted_loss": {
+      "value": "inverse"
+    },
+    "focal_loss": {
+      "value": false
+    },
+    "save_model": {
+      "value": true
+    },
+    "experiment_no": {
+      "distribution": "int_uniform",
+      "min": 1,
+      "max": 10
+    },
+    "correct_labels": {
+      "value": true
+    },
+    "normalize": {
+      "value": true
+    }
+  }
+}
