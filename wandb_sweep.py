@@ -75,6 +75,15 @@ def get_dls(config):
         train_transforms = [convert_to_3channel]
     else:
         train_transforms = [tfms.ToTensor()]
+    
+    if config.get('normalize', False):
+        if config.transfer_learning:
+            stats = *imagenet_stats
+        else:
+            stats = [None, None, None], [None, None, None]
+            
+        train_transforms.append(tfms.Normalize(stats))
+        
     train_transforms.append(tfms.Resize(image_size))
     valid_transforms = train_transforms.copy()
     
