@@ -1,5 +1,5 @@
 {
-  "name": "optimized_transfer_best5",
+  "name": "tl_best5_normalized",
   "method": "grid",
   "metric": {
     "name": "combined_f1_time",

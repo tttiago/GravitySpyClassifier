@@ -1,0 +1,39 @@
+{
+  "name": "baseline_normalized",
+  "method": "grid",
+  "metric": {
+    "name": "f1_score",
+    "goal": "maximize"
+  },
+  "parameters": {
+    "architecture": {
+      "value": "resnet18"
+    },
+    "epochs": {
+      "value": 15
+    },
+    "suggest_func": {
+      "value": "steep"
+    },
+    "batch_size": {
+      "value": 64
+    },
+    "view": {
+      "value": "encoded134"
+    },
+    "transfer_learning": {
+      "value": false
+    },
+    "mixed_precision": {
+      "value": true
+    },
+    "experiment_no": {
+        "distribution": "int_uniform",
+        "min": 1,
+        "max": 10
+    },
+    "correct_labels": {
+        "value": true
+    },
+  }
+}
