@@ -104,7 +104,7 @@ def plot_top_losses_glitches(interp, learner, ds_idx=1,
         ax = axes.flat[i]
         idx = int(idx)
         true_label = vocab[ds[idx][1]]
-        channel = channel_list[i]
+        channel = channel_list[i] if i < len(channel_list) else 2
         view_time = float(view_dict[channel][:3])
         freq_pos = np.linspace(-100, 2048, 9)[1:-1]
         freqs = np.logspace(3, 11, num=9, base=2)[1:-1]
