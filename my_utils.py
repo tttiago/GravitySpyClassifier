@@ -29,6 +29,20 @@ def convert_to_3channel(x):
 def np_to_tensor(x):
     return torch.Tensor(x)
 
+############  Get mean and std for each channel ############
+
+def get_channels_stats(view, view_means, view_stds):
+    if view == 'merged':
+        means = np.mean(view_means)
+        stds  = np.mean(view_stds)
+    elif view.startswith('single'):
+        means = view_means[int(view[-1])-1]
+        stds  = view_stds[int(view[-1])-1]
+    elif view.startswith('encoded'):
+        means = [view_means[int(s_view[-1])-1] for s_view in view[7:]]
+        stds  = [view_stds[int(s_view[-1])-1] for s_view in view[7:]]
+    return means, stds
+
 ############  Plotting functions #################
 
 def plot_loss(recorder):

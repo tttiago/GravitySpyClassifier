@@ -15,7 +15,7 @@ from timm import models
 warnings.filterwarnings("ignore")
 
 from gspy_dset import Data_GW
-from my_utils import convert_to_3channel, np_to_tensor
+from my_utils import convert_to_3channel, np_to_tensor, get_channels_stats
 
 #####################################################################
 
@@ -76,14 +76,15 @@ def get_dls(config):
     else:
         train_transforms = [tfms.ToTensor()]
     
+    # Normalize dataset using its statistics of ImageNet's in case of pretrained models.
     if config.get('normalize', False):
         if config.transfer_learning:
             means, stds = imagenet_stats
         else:
-            means, stds = [None, None, None], [None, None, None]
-            
+            view_means, view_stds = [0.1783, 0.1644, 0.1513, 0.1418], [0.1158, 0.1007, 0.0853, 0.0719]
+            means, stds = get_channels_stats(config.vew, view_means, view_stds)   
         train_transforms.append(tfms.Normalize(means, stds))
-        
+    
     train_transforms.append(tfms.Resize(image_size))
     valid_transforms = train_transforms.copy()
     
