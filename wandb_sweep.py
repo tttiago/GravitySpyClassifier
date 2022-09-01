@@ -82,7 +82,7 @@ def get_dls(config):
             means, stds = imagenet_stats
         else:
             view_means, view_stds = [0.1783, 0.1644, 0.1513, 0.1418], [0.1158, 0.1007, 0.0853, 0.0719]
-            means, stds = get_channels_stats(config.vew, view_means, view_stds)   
+            means, stds = get_channels_stats(config.view, view_means, view_stds)   
         train_transforms.append(tfms.Normalize(means, stds))
     
     train_transforms.append(tfms.Resize(image_size))
