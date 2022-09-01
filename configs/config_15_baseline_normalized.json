@@ -27,6 +27,9 @@
     "mixed_precision": {
       "value": true
     },
+    "save_model": {
+      "value": true
+    },
     "experiment_no": {
         "distribution": "int_uniform",
         "min": 1,
@@ -35,5 +38,8 @@
     "correct_labels": {
         "value": true
     },
+    "normalize": {
+      "value": true
+    }
   }
 }
