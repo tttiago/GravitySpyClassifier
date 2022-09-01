@@ -78,7 +78,7 @@ def get_dls(config):
     
     if config.get('normalize', False):
         if config.transfer_learning:
-            means, stds = *imagenet_stats
+            means, stds = imagenet_stats
         else:
             means, stds = [None, None, None], [None, None, None]
             
