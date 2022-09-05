@@ -14,7 +14,7 @@ from timm import models
 
 warnings.filterwarnings("ignore")
 
-from gspy_dset import Data_GW
+from gspy_dset import Data_Glitches
 from my_utils import convert_to_3channel, np_to_tensor, get_channels_stats
 
 #####################################################################
@@ -106,10 +106,10 @@ def get_dls(config):
     # Use test dataset on final evaluation.
     valid_data_type = 'validation' if not config.get('test_evaluation', False) else 'test'
 
-    ds = Data_GW(
+    ds = Data_Glitches(
         dataset_path=DATASET_PATH, data_type="train", view=config.view, correct_labels=correct_labels, transform=train_transforms
     )
-    ds_val = Data_GW(
+    ds_val = Data_Glitches(
         dataset_path=DATASET_PATH, data_type=valid_data_type, view=config.view, correct_labels=correct_labels, transform=valid_transforms
     )
     dls = DataLoaders.from_dsets(ds, ds_val, bs=config.batch_size, device=device)

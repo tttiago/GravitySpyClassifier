@@ -3,7 +3,7 @@ from fastai.basics import *
 from torch.utils.data import Dataset
 
 
-class Data_GW(Dataset):
+class Data_Glitches(Dataset):
     def __init__(self, dataset_path, data_type="train", view="encoded134", one_hot=False, correct_labels=False, transform=None):
         self.dataset_path = Path(dataset_path)
         self.transform = transform
