@@ -57,6 +57,7 @@ def get_dls(config):
         image_dim = int(interp1d([50,140],[50,280])(image_dim))
     
     # Get width and height for square and non-square images.
+    # image_size = (height, width)
     if config.get('image_square', False):
         image_size = (image_dim, image_dim)
     else:
