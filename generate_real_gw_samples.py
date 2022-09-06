@@ -29,7 +29,7 @@ for event in tqdm(events):
             hq = data.q_transform(
                 frange=(10, 2048), outseg=(gps - time_window / 2, gps + time_window / 2)
             )
-            plot = hq.plot(figsize=(14, 17), dpi=20, vmin=0, vmax=25.5)
+            plot = hq.plot(figsize=(17, 14), dpi=20, vmin=0, vmax=25.5)
             plt.yscale("log", base=2)
             ax = plt.gca()
             ax.axis("off")
