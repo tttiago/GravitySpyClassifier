@@ -1,8 +1,12 @@
-import matplotlib.pyplot as plt
-import tqdm
 from gwosc import datasets
 from gwosc.datasets import event_gps, run_segment
 from gwpy.timeseries import TimeSeries
+import matplotlib.pyplot as plt
+from PIL import Image
+from tqdm import tqdm
+
+GRAY_SCALE = True
+DATASET_PATH = './datasets/Real_GWs_BW'
 
 O1_events = datasets.find_datasets(
     type="events", catalog="GWTC-1-confident", segment=run_segment("O1")
@@ -31,7 +35,8 @@ for event in tqdm(events):
             ax.axis("off")
             plt.tight_layout()
             plt.subplots_adjust(bottom=0.0, left=0.0, right=1.0, top=1.001)
-            plt.savefig(
-                f"./datasets/Real_GWs/{event.split('-')[0]}_{detector}_{time_window}.png", dpi=10
-            )
+            img_name = f"{DATASET_PATH}/{event.split('-')[0]}_{detector}_{time_window}.png"
+            plt.savefig(img_name, dpi=10)
             plt.close()
+            if GRAY_SCALE:
+                Image.open(img_name).convert('L').save(img_name)
