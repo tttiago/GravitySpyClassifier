@@ -1,9 +1,11 @@
+.gitattributes
+.gitconfig
 __pycache__/
+.ipynb_checkpoints/
 old/
 datasets/
 models/
 wandb/
 configs/config_99*
 wandb_key.txt
-.ipynb_checkpoints/
 Untitled*.ipynb
