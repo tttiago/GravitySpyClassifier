@@ -3,7 +3,7 @@ from torch.utils.data import Dataset
 from PIL import Image
 
 class Data_GW(Dataset):
-    def __init__(self, dataset_path, view="encoded134", one_hot=False, correct_labels=False, transform=None):
+    def __init__(self, dataset_path, view="encoded134", one_hot=False, transform=None):
         self.dataset_path = Path(dataset_path)
         files = self.dataset_path.glob('*.png')
         self.events = sorted(set([file.name.rpartition('_')[0] for file in files]))
