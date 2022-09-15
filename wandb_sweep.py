@@ -16,15 +16,20 @@ warnings.filterwarnings("ignore")
 
 from gspy_dset import Data_Glitches
 from gw_dset import Data_GW
-from my_utils import convert_to_3channel, np_to_tensor, get_channels_stats
+from my_utils import convert_to_3channel, np_to_tensor, get_channels_stats, alter_stats
 
 #####################################################################
 
 DATASET_PATH = "./datasets/Glitches"
-REAL_GW_PATH = './datasets/Real_GWs_BW'
+REAL_GW_PATH = './datasets/Real_GWs_BW_v2'
+
 PROJECT = 'thesis_gravity_spy'
 device = "cuda" if torch.cuda.is_available() else "cpu"
+
 n_classes = 22
+gspy_view_means, gspy_view_stds = [0.1783, 0.1644, 0.1513, 0.1418], [0.1158, 0.1007, 0.0853, 0.0719]
+gw_view_means, gw_view_stds = [0.1845, 0.1821, 0.1822, 0.1809], [0.0691, 0.0660, 0.0660, 0.0636]
+
 
 # Dictionary with the implemented models.
 # zero_init_last is the default torchvision behaviour. 
@@ -84,7 +89,6 @@ def get_dls(config):
         if config.transfer_learning:
             means, stds = imagenet_stats
         else:
-            view_means, view_stds = [0.1783, 0.1644, 0.1513, 0.1418], [0.1158, 0.1007, 0.0853, 0.0719]
             means, stds = get_channels_stats(config.view, view_means, view_stds)   
         train_transforms.append(tfms.Normalize(means, stds))
     
@@ -100,29 +104,37 @@ def get_dls(config):
         shift_and_zoom = tfms.RandomAffine(degrees=0, translate=translate, scale=scale)
         train_transforms.append(shift_and_zoom)
     
-    train_transforms = tfms.Compose(train_transforms)
-    valid_transforms = tfms.Compose(valid_transforms)
+    train_transforms_cmp = tfms.Compose(train_transforms)
+    valid_transforms_cmp = tfms.Compose(valid_transforms)
     
     # Check if dataset with changed labels is to be used.
     correct_labels = config.get('correct_labels', False)
     
     # Use test dataset on final evaluation.
     valid_data_type = 'validation' if not config.get('test_evaluation', False) else 'test'
-    
-    # Use real gw dataset for evaluation.
-    real_gw_eval = config.get('real_gw_eval', False)
 
     ds = Data_Glitches(
-        dataset_path=DATASET_PATH, data_type="train", view=config.view, correct_labels=correct_labels, transform=train_transforms
+        dataset_path=DATASET_PATH, data_type="train", view=config.view, correct_labels=correct_labels, transform=train_transforms_cmp
     )
     ds_val = Data_Glitches(
-        dataset_path=DATASET_PATH, data_type=valid_data_type, view=config.view, correct_labels=correct_labels, transform=valid_transforms
+        dataset_path=DATASET_PATH, data_type=valid_data_type, view=config.view, correct_labels=correct_labels, transform=valid_transforms_cmp
     )
     dsets = [ds, ds_val]
         
-    if real_gw_eval:
+    # Use real gw dataset for evaluation.
+    if config.get('real_gw_eval', False):
+        gspy_means, gspy_stds = get_channels_stats(config.view, gspy_view_means, gspy_view_stds)
+        gw_means, gw_stds = get_channels_stats(config.view, gw_view_means, gw_view_stds)
+        
+        gw_transforms = valid_transforms.copy()
+        
+        gw_transforms.append(partial(alter_stats, x_stats=[gw_means, gw_stds], desired_stats=[gspy_means, gspy_stds]))
+        # gw_transforms.append(Normalize(gspy_means, gspy_stds))
+        
+        gw_transforms_cmp = tfms.Compose(gw_transforms)
+        
         ds_gw = Data_GW(
-            dataset_path=REAL_GW_PATH, view=config.view, transform=valid_transforms
+            dataset_path=REAL_GW_PATH, view=config.view, transform=gw_transforms_cmp
         )
         dsets.append(ds_gw)
 
