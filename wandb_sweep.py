@@ -15,11 +15,13 @@ from timm import models
 warnings.filterwarnings("ignore")
 
 from gspy_dset import Data_Glitches
+from gw_dset import Data_GW
 from my_utils import convert_to_3channel, np_to_tensor, get_channels_stats
 
 #####################################################################
 
 DATASET_PATH = "./datasets/Glitches"
+REAL_GW_PATH = './datasets/Real_GWs_BW'
 PROJECT = 'thesis_gravity_spy'
 device = "cuda" if torch.cuda.is_available() else "cpu"
 n_classes = 22
@@ -106,6 +108,9 @@ def get_dls(config):
     
     # Use test dataset on final evaluation.
     valid_data_type = 'validation' if not config.get('test_evaluation', False) else 'test'
+    
+    # Use real gw dataset for evaluation.
+    real_gw_eval = config.get('real_gw_eval', False)
 
     ds = Data_Glitches(
         dataset_path=DATASET_PATH, data_type="train", view=config.view, correct_labels=correct_labels, transform=train_transforms
@@ -113,8 +118,16 @@ def get_dls(config):
     ds_val = Data_Glitches(
         dataset_path=DATASET_PATH, data_type=valid_data_type, view=config.view, correct_labels=correct_labels, transform=valid_transforms
     )
-    dls = DataLoaders.from_dsets(ds, ds_val, bs=config.batch_size, device=device)
+    dsets = [ds, ds_val]
+        
+    if real_gw_eval:
+        ds_gw = Data_GW(
+            dataset_path=REAL_GW_PATH, view=config.view, transform=valid_transforms
+        )
+        dsets.append(ds_gw)
 
+    dls = DataLoaders.from_dsets(*dsets, bs=config.batch_size, device=device)
+    
     return dls, image_size, n_channels              
 
 
