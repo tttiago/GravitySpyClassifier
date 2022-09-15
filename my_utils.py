@@ -29,9 +29,17 @@ def convert_to_3channel(x):
 def np_to_tensor(x):
     return torch.Tensor(x)
 
+def alter_stats(x, x_stats, desired_stats):
+    d_means, d_stds = tensor(desired_stats)
+    x_means, x_stds = tensor(x_stats)
+    
+    x = d_means.view(-1, 1, 1) + (x - x_means.view(-1, 1, 1)) * d_stds.view(-1, 1, 1) / x_stds.view(-1, 1, 1)
+    return x
+
+
 ############  Get mean and std for each channel ############
 
-def get_channels_stats(view, view_means, view_stds):
+def get_channels_stats(view, view_means=None, view_stds=None):
     if view == 'merged':
         means = np.mean(view_means)
         stds  = np.mean(view_stds)
