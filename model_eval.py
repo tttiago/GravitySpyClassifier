@@ -178,6 +178,7 @@ def plot_CM(cm, vocab=None, normalize=False, y_true=None, y_pred=None):
     ax.yaxis.set_label_position("right")
     plt.tight_layout()
     plt.ylabel("Actual Class", labelpad=10, fontsize='x-large')
+    plt.xlabel("Predicted Class", labelpad=10, fontsize='x-large')
     plt.grid(False)
 
     return fig, ax
