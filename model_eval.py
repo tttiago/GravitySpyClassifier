@@ -93,10 +93,7 @@ def plot_top_losses_glitches(interp, learner, ds_idx=1,
         2: '4.0.png'
     }
     
-    if ds_idx == 0:
-        ds = learner.dls.train_ds
-    else:
-        ds = learner.dls.valid_ds
+    ds = learner.dls.loaders[ds_idx].dataset
     
     top_losses = interp.top_losses(nrows*ncols, largest=largest)
     fig, axes = plt.subplots(nrows, ncols, figsize=figsize, sharey=True)
@@ -135,7 +132,7 @@ def plot_top_losses_glitches(interp, learner, ds_idx=1,
     return fig, axes
 
 
-def plot_CM(cm, vocab=None, normalize=False, y_true=None, y_pred=None):
+def plot_CM(cm, vocab=None, normalize=False, y_true=None, y_pred=None, figsize=(12, 12)):
     """Plot confusion matrix."""
     
     def _add_to_matrix(cm):
@@ -150,7 +147,7 @@ def plot_CM(cm, vocab=None, normalize=False, y_true=None, y_pred=None):
         cm = _add_to_matrix(cm)
         extended_vocab = vocab + ["Recall", "Precision"]
 
-    fig = plt.figure(figsize=(12, 12))
+    fig = plt.figure(figsize=figsize)
     plt.imshow(cm, interpolation="nearest", cmap="Blues", aspect=0.85 if normalize else 1)
 
     tick_marks = np.arange(len(vocab))
