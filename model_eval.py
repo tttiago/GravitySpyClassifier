@@ -131,6 +131,42 @@ def plot_top_losses_glitches(interp, learner, ds_idx=1,
             
     return fig, axes
 
+def plot_top_losses_gws(interp, learner, ds_idx=2, y_preds=None, vocab=None,
+                        largest=True, show_label=True, show_pred=True, show_loss=False, 
+                        nrows = 4, ncols=4, figsize=(11, 11)):
+    """Plot top losses for the real GW events dataset."""
+    ds = learner.dls.loaders[ds_idx].dataset
+    top_losses = interp.top_losses(nrows*ncols, largest=largest)
+    fig, axes = plt.subplots(nrows, ncols, figsize=figsize, sharey=True)
+    for i, idx in enumerate(top_losses[1]):
+        ax = axes.flat[i]
+        idx = int(idx)
+        true_label = vocab[ds[idx][1]]
+        freq_pos = np.linspace(-100, 2048, 9)[1:-1]
+        freqs = np.logspace(3, 11, num=9, base=2)[1:-1]
+        view_time = 4
+        times = np.linspace(-view_time/2, view_time/2, 5)
+        
+        img = ax.imshow(ds[idx][0].permute(1, 2, 0), extent=[-view_time/2,view_time/2,8,2048], aspect=140/170*view_time/2038)
+        ax.tick_params(axis='both', which='both', length=0)
+        ax.set_xticks([])
+        ax.set_yticks(freq_pos, [f'{freq:.0f}' for freq in freqs]);
+        
+        title = ''
+        if show_label:
+            title += f'label: {true_label}'
+        if show_pred:
+            title += f'\npred: {vocab[y_preds[idx]]}'
+        if show_loss:
+            title += f'\nloss: {top_losses[0][i+first_idx]:.2e}'
+        if title:
+            ax.set_title(title)
+            
+    for ax in axes[:,0]: ax.set_ylabel('Frequency (Hz)') 
+    fig.tight_layout()
+            
+    return fig, axes
+
 
 def plot_CM(cm, vocab=None, normalize=False, y_true=None, y_pred=None, figsize=(12, 12)):
     """Plot confusion matrix."""
