@@ -21,15 +21,21 @@ from my_utils import convert_to_3channel, np_to_tensor, get_channels_stats, alte
 #####################################################################
 
 DATASET_PATH = "./datasets/Glitches"
-REAL_GW_PATH = './datasets/Real_GWs_BW_v2'
+REAL_GW_PATH = './datasets/Real_GWs'
 
 PROJECT = 'thesis_gravity_spy'
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 n_classes = 22
 gspy_view_means, gspy_view_stds = [0.1783, 0.1644, 0.1513, 0.1418], [0.1158, 0.1007, 0.0853, 0.0719]
-gw_view_means, gw_view_stds = [0.1845, 0.1821, 0.1822, 0.1809], [0.0691, 0.0660, 0.0660, 0.0636]
 
+# Each gw_stats key is the dset version.
+gw_stats = {
+    1: ([0.1845, 0.1821, 0.1822, 0.1809], [0.0691, 0.0660, 0.0660, 0.0636]),
+    2: ([0.1896, 0.1875, 0.1853, 0.1807], [0.0773, 0.0724, 0.0686, 0.0635]),
+    3: ([0.1594, 0.1584, 0.1569, 0.1531], [0.0530, 0.0504, 0.0476, 0.0427]),
+    4: ([0.1729, 0.1717, 0.1702, 0.1688], [0.0570, 0.0554, 0.0520, 0.0495])
+}
 
 # Dictionary with the implemented models.
 # zero_init_last is the default torchvision behaviour. 
@@ -123,18 +129,20 @@ def get_dls(config):
         
     # Use real gw dataset for evaluation.
     if config.get('real_gw_eval', False):
-        gspy_means, gspy_stds = get_channels_stats(config.view, gspy_view_means, gspy_view_stds)
-        gw_means, gw_stds = get_channels_stats(config.view, gw_view_means, gw_view_stds)
+        gw_dset_version = config.get('real_gw_version', 1)
         
         gw_transforms = valid_transforms.copy()
-        
-        gw_transforms.append(partial(alter_stats, x_stats=[gw_means, gw_stds], desired_stats=[gspy_means, gspy_stds]))
-        # gw_transforms.append(Normalize(gspy_means, gspy_stds))
-        
+        if config.get('real_gw_normalize', False):
+            gspy_means, gspy_stds = get_channels_stats(config.view, gspy_view_means, gspy_view_stds)
+            gw_view_means, gw_view_stds = gw_stats[gw_dset_version]
+            gw_means, gw_stds = get_channels_stats(config.view, gw_view_means, gw_view_stds)
+            gw_transforms.append(partial(alter_stats, x_stats=[gw_means, gw_stds], desired_stats=[gspy_means, gspy_stds]))
+            # gw_transforms.append(Normalize(gspy_means, gspy_stds))
         gw_transforms_cmp = tfms.Compose(gw_transforms)
         
+        full_gw_path = REAL_GW_PATH+ '_v' + str(gw_dset_version)
         ds_gw = Data_GW(
-            dataset_path=REAL_GW_PATH, view=config.view, transform=gw_transforms_cmp
+            dataset_path=full_gw_path, view=config.view, transform=gw_transforms_cmp
         )
         dsets.append(ds_gw)
 
