@@ -9,8 +9,8 @@ from tqdm import tqdm
 import sys
 
 GRAY_SCALE = True
-SHIFT_SAMPLES = True
-DATASET_PATH = './datasets/Real_GWs_v6'
+SHIFT_SAMPLES = False
+DATASET_PATH = './datasets/Real_GWs_v7'
 VMAX = 25.5
 
 O1_events = datasets.find_datasets(
@@ -51,8 +51,7 @@ if __name__ == '__main__':
             if SHIFT_SAMPLES:
                 max_point = int(2*len(hq)/5) + np.argmax(np.max(hq[int(2*len(hq)/5):int(3*len(hq)/5),:], axis=1))
             else:
-                max_point = 0
-            shift = -max(time_windows)/2-window_pad + max_point * tres
+                max_point = int(len(hq)/2)
             qspecgram = np.rot90(hq.value)
             
             for time_window in time_windows:            
