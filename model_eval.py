@@ -150,9 +150,10 @@ def plot_top_losses_gws(interp, learner, ds_idx=2, y_preds=None, vocab=None,
         img = ax.imshow(ds[idx][0].permute(1, 2, 0), extent=[-view_time/2,view_time/2,8,2048], aspect=140/170*view_time/2038)
         ax.tick_params(axis='both', which='both', length=0)
         ax.set_xticks([])
-        ax.set_yticks(freq_pos, [f'{freq:.0f}' for freq in freqs]);
+        ax.set_yticks([])
+        #ax.set_yticks(freq_pos, [f'{freq:.0f}' for freq in freqs]);
         
-        title = ''
+        title = r"$\bf{" + ds.events[idx].replace('_', ' - ') + "}$" +'\n'
         if show_label:
             title += f'label: {true_label}'
         if show_pred:
@@ -162,7 +163,7 @@ def plot_top_losses_gws(interp, learner, ds_idx=2, y_preds=None, vocab=None,
         if title:
             ax.set_title(title)
             
-    for ax in axes[:,0]: ax.set_ylabel('Frequency (Hz)') 
+    #for ax in axes[:,0]: ax.set_ylabel('Frequency (Hz)') 
     fig.tight_layout()
             
     return fig, axes
