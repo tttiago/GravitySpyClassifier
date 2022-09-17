@@ -9,6 +9,7 @@ from tqdm import tqdm
 import sys
 
 GRAY_SCALE = True
+SHIFT_SAMPLES = True
 DATASET_PATH = './datasets/Real_GWs_v6'
 VMAX = 25.5
 
@@ -47,7 +48,10 @@ if __name__ == '__main__':
                 logf=True,
                 whiten=True        
             )
-            max_point = int(2*len(hq)/5) + np.argmax(np.max(hq[int(2*len(hq)/5):int(3*len(hq)/5),:], axis=1))       
+            if SHIFT_SAMPLES:
+                max_point = int(2*len(hq)/5) + np.argmax(np.max(hq[int(2*len(hq)/5):int(3*len(hq)/5),:], axis=1))
+            else:
+                max_point = 0
             shift = -max(time_windows)/2-window_pad + max_point * tres
             qspecgram = np.rot90(hq.value)
             
