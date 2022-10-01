@@ -70,6 +70,8 @@ def plot_CM_PR(cm, y_true, y_pred, vocab, figsize=(10, 10)):
                 horizontalalignment="center",
                 verticalalignment="center",
                 color="white" if pr[i, j] > thresh else "black",
+                weight='bold',
+                size=9.5
             )
     ax = plt.gca()
     ax.tick_params(axis="x", length=0, top=False, bottom=False, labeltop=False, labelbottom=False)
