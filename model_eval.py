@@ -155,15 +155,15 @@ def plot_top_losses_gws(interp, learner, ds_idx=2, y_preds=None, vocab=None,
         ax.set_yticks([])
         #ax.set_yticks(freq_pos, [f'{freq:.0f}' for freq in freqs]);
         
-        title = r"$\bf{" + ds.events[idx].replace('_', ' - ') + "}$" +'\n'
+        title = [r"$\bf{" + ds.events[idx].replace('_', ' - ') + "}$"]
         if show_label:
-            title += f'label: {true_label}'
+            title.append(f'label: {true_label}')
         if show_pred:
-            title += f'\npred: {vocab[y_preds[idx]]}'
+            title.append(f'pred: {vocab[y_preds[idx]]}')
         if show_loss:
-            title += f'\nloss: {top_losses[0][i+first_idx]:.2e}'
+            title.append(f'loss: {top_losses[0][i+first_idx]:.2e}')
         if title:
-            ax.set_title(title)
+            ax.set_title('\n'.join(title))
             
     #for ax in axes[:,0]: ax.set_ylabel('Frequency (Hz)') 
     fig.tight_layout()
