@@ -9,7 +9,7 @@ from tqdm import tqdm
 import sys
 
 GRAY_SCALE = True
-SHIFT_SAMPLES = False
+SHIFT_SAMPLES = True
 DATASET_PATH = './datasets/Real_GWs_v8'
 VMAX = 25.5
 
