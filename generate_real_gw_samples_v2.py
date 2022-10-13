@@ -10,7 +10,7 @@ import sys
 
 GRAY_SCALE = True
 SHIFT_SAMPLES = False
-DATASET_PATH = './datasets/Real_GWs_v7'
+DATASET_PATH = './datasets/Real_GWs_v8'
 VMAX = 25.5
 
 O1_events = datasets.find_datasets(
@@ -19,7 +19,14 @@ O1_events = datasets.find_datasets(
 O2_events = datasets.find_datasets(
     type="events", catalog="GWTC-1-confident", segment=run_segment("O2_4KHZ_R1")
 )
-events = O1_events + O2_events
+O3a_events = datasets.find_datasets(
+    type="events", catalog="GWTC-2.1-confident", segment=run_segment("O3a_4KHZ_R1")
+)
+O3b_events = datasets.find_datasets(
+    type="events", catalog="GWTC-3-confident", segment=run_segment("O3b_4KHZ_R1")
+)
+#events = O1_events + O2_events
+events = O3a_events + O3b_events
 
 sample_rate = 16384
 seg_int = 32
@@ -40,14 +47,18 @@ if __name__ == '__main__':
         gps = event_gps(event)
         segment = (np.ceil(gps) - seg_int/2, np.ceil(gps) + seg_int/2)
         for detector in detectors:
-            data = TimeSeries.fetch_open_data(detector, *segment, sample_rate=sample_rate, cache=True, verbose=False)
-            hq = data.q_transform(
-                frange=(10, 2048), 
-                outseg=(gps-max(time_windows)/2-window_pad, gps+max(time_windows)/2+window_pad),
-                tres=tres,
-                logf=True,
-                whiten=True        
-            )
+            try:
+                data = TimeSeries.fetch_open_data(detector, *segment, sample_rate=sample_rate, cache=True, verbose=False)
+                hq = data.q_transform(
+                    frange=(10, 2048), 
+                    outseg=(gps-max(time_windows)/2-window_pad, gps+max(time_windows)/2+window_pad),
+                    tres=tres,
+                    logf=True,
+                    whiten=True        
+                )
+            except ValueError:
+                print(f"There was a problem with the {event.split('-')[0]}_{detector} signal. Skipping it...")
+                continue
             if SHIFT_SAMPLES:
                 max_point = int(2*len(hq)/5) + np.argmax(np.max(hq[int(2*len(hq)/5):int(3*len(hq)/5),:], axis=1))
             else:
