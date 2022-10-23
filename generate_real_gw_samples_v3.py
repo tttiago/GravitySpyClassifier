@@ -10,7 +10,7 @@ from PIL import Image
 from tqdm import tqdm
 
 GRAY_SCALE = True
-DATASET_PATH = "./datasets/Real_GWs_v10"
+DATASET_PATH = "./datasets/Real_GWs/Real_GWs_v10"
 
 MAX_NORM_ENERGY = 25.5
 Q_RANGE = (4, 64)
