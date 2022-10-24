@@ -113,17 +113,15 @@ class Data_GlitchesO3(Dataset):
         self.transform = transform
         self.samples = pd.read_csv(self.dataset_path / f"meta_data_O3_v{dset_version}.csv")
 
-        new_labels = np.unique(self.samples["label"])
         old_labels = GSPY_OLD_LABELS
-        all_labels = old_labels + sorted(list(set(new_labels) - set(old_labels)))
 
         if one_hot:
             self.class_dict = {
-                key: F.one_hot(torch.tensor(i), num_classes=len(all_labels)).float()
-                for i, key in enumerate(all_labels)
+                key: F.one_hot(torch.tensor(i), num_classes=len(old_labels)).float()
+                for i, key in enumerate(old_labels)
             }
         else:
-            self.class_dict = {key: i for i, key in enumerate(all_labels)}
+            self.class_dict = {key: i for i, key in enumerate(old_labels)}
         self.view_dict = {"1": "0.5.png", "2": "1.0.png", "3": "2.0.png", "4": "4.0.png"}
         assert (
             view == "merged"
@@ -134,6 +132,13 @@ class Data_GlitchesO3(Dataset):
 
     def __getitem__(self, idx):
         id_, det, label = self.samples.iloc[idx]
+
+        # Handle new labels:
+        if label == "Blip_Low_Frequency":
+            label = "None_of_the_Above"
+        elif label == "Fast_Scattering":
+            label = "None_of_the_Above"
+
         view = self.view
 
         if self.view == "merged":
