@@ -26,7 +26,7 @@ def choose_samples():
     The gravityspy_ids and labels are saved in a meta_data file."""
 
     print("Selecting samples...")
-    meta_data = pd.DataFrame(columns=["id", "label"])
+    meta_data = pd.DataFrame(columns=["gravityspy_id", "ifo", "label"])
     for label in labels:
         for detector in detectors:
             detector_df = detector_dfs[detector]
@@ -41,7 +41,7 @@ def choose_samples():
                 ids = np.array(detector_df.loc[detector_df["ml_label"] == label]["gravityspy_id"])
             # Save ids and labels to meta_data.
             for id_ in ids:
-                meta_data.loc[len(meta_data)] = [id_, label]
+                meta_data.loc[len(meta_data)] = [id_, detector, label]
 
     meta_data.to_csv(meta_data_path, index=False)
     print("Sample selection saved.")
@@ -53,9 +53,8 @@ def generate_samples():
 
     print("Saving images...")
     for row in tqdm(meta_data.values):
-        id_, _ = row
+        id_, det, _ = row
         O3_data_row = O3_data[O3_data["gravityspy_id"] == id_]
-        det = O3_data_row["ifo"].value[0]
 
         # Skip generation if image already in folder.
         last_img_name = f"{full_dset_path}/{det}_{id_}_spectrogram_{views[-1]}.png"
@@ -76,10 +75,11 @@ def generate_samples():
             print("Trying again")
             O3_data_row.download(download_path=full_dset_path)
 
-        # Crop the images to only include the spectrograms and resize to 170x140.
+        # Crop the images to only include the spectrograms, convert to BW, and resize to 170x140.
         for view in views:
             img_name = f"{full_dset_path}/{det}_{id_}_spectrogram_{view}.png"
-            Image.open(img_name).crop((left, top, right, bottom)).resize(img_size).save(img_name)
+            crop_idxs = left, top, right, bottom
+            Image.open(img_name).crop(crop_idxs).resize(img_size).convert("L").save(img_name)
 
 
 def parse_args():
