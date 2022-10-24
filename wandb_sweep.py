@@ -14,7 +14,7 @@ from timm import models
 
 warnings.filterwarnings("ignore")
 
-from gspy_dset import Data_Glitches
+from gspy_dset import Data_Glitches, Data_GlitchesO3
 from gw_dset import Data_GW
 from my_utils import alter_stats, convert_to_3channel, get_channels_stats, np_to_tensor
 
@@ -22,6 +22,7 @@ from my_utils import alter_stats, convert_to_3channel, get_channels_stats, np_to
 
 DATASET_PATH = "./datasets/Glitches"
 REAL_GW_PATH = "./datasets/Real_GWs/Real_GWs"
+GLITCHES_O3_PATH = "./datasets/GlitchesO3"
 
 PROJECT = "thesis_gravity_spy"
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -99,7 +100,7 @@ def get_dls(config):
         if config.transfer_learning:
             means, stds = imagenet_stats
         else:
-            means, stds = get_channels_stats(config.view, view_means, view_stds)
+            means, stds = get_channels_stats(config.view, gspy_view_means, gspy_view_stds)
         train_transforms.append(tfms.Normalize(means, stds))
 
     train_transforms.append(tfms.Resize(image_size))
@@ -161,6 +162,18 @@ def get_dls(config):
         full_gw_path = REAL_GW_PATH + "_v" + str(gw_dset_version)
         ds_gw = Data_GW(dataset_path=full_gw_path, view=config.view, transform=gw_transforms_cmp)
         dsets.append(ds_gw)
+
+    if config.get("glitches_O3_eval", False):
+        glitches_O3_version = config.get("glitches_O3_version", 1)
+
+        glitches_O3_tfms = valid_transforms_cmp
+        ds_gspy_O3 = Data_GlitchesO3(
+            dataset_path=GLITCHES_O3_PATH,
+            dset_version=glitches_O3_version,
+            view=config.view,
+            transform=glitches_O3_tfms,
+        )
+        dsets.append(ds_gspy_O3)
 
     dls = DataLoaders.from_dsets(*dsets, bs=config.batch_size, device=device)
 
