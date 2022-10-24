@@ -4,28 +4,33 @@ from torch.utils.data import Dataset
 
 
 class Data_Glitches(Dataset):
-    def __init__(self, dataset_path, data_type="train", view="encoded134", one_hot=False, correct_labels=False, transform=None):
+    def __init__(
+        self,
+        dataset_path,
+        data_type="train",
+        view="encoded134",
+        one_hot=False,
+        correct_labels=False,
+        transform=None,
+    ):
         self.dataset_path = Path(dataset_path)
         self.transform = transform
         self.correct_labels = correct_labels
-        self.meta_data = pd.read_csv(self.dataset_path / "trainingset_v1d0_metadata.csv")  
+        self.meta_data = pd.read_csv(self.dataset_path / "trainingset_v1d0_metadata.csv")
         if one_hot:
             self.class_dict = {
                 key: F.one_hot(torch.tensor(i), num_classes=22).float()
                 for i, key in enumerate(np.unique(self.meta_data["label"]))
             }
         else:
-            self.class_dict = {
-                key: i
-                for i, key in enumerate(np.unique(self.meta_data["label"]))
-            }
+            self.class_dict = {key: i for i, key in enumerate(np.unique(self.meta_data["label"]))}
         assert data_type in self.meta_data["sample_type"].unique(), "unknown data_type"
         self.data_type = data_type
         self.view_dict = {"1": "0.5.png", "2": "1.0.png", "3": "2.0.png", "4": "4.0.png"}
-        assert view == 'merged' or (
-            view.startswith('single') and view[-1] in self.view_dict.keys()
-        )  or (
-            view.startswith("encoded") and len(view) >= len("encoded") + 2
+        assert (
+            view == "merged"
+            or (view.startswith("single") and view[-1] in self.view_dict.keys())
+            or (view.startswith("encoded") and len(view) >= len("encoded") + 2)
         ), "wrong view format"
         self.view = view
 
@@ -45,20 +50,23 @@ class Data_Glitches(Dataset):
                 view4 = f[label][data_type][grp]["4.0.png"][0]
                 img = np.vstack((np.hstack((view1, view2)), (np.hstack((view3, view4)))))
             elif self.view.startswith("encoded"):
-                n_views = len(self.view) - len('encoded')
+                n_views = len(self.view) - len("encoded")
                 chosen_views = list(self.view[-n_views:])
-                channels = [f[label][data_type][grp][self.view_dict[chosen_view]][0] for chosen_view in chosen_views]
+                channels = [
+                    f[label][data_type][grp][self.view_dict[chosen_view]][0]
+                    for chosen_view in chosen_views
+                ]
                 img = np.array((channels))
             else:
                 img = f[label][data_type][grp][self.view_dict[view[-1]]][0]
 
         if self.transform:
             img = self.transform(img)
-        
+
         # Correct wrongly labelled sample.
-        if self.correct_labels and grp == 'VXw4KBWl5g':
-            label = 'Paired_Doves'
-        
+        if self.correct_labels and grp == "VXw4KBWl5g":
+            label = "Paired_Doves"
+
         return (img, self.class_dict[label])
 
     def __len__(self):
