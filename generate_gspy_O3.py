@@ -3,6 +3,7 @@
 import argparse
 import os
 import sys
+from http.client import RemoteDisconnected
 from urllib.error import HTTPError, URLError
 
 import numpy as np
@@ -85,7 +86,7 @@ def generate_samples():
         # Try to download spectrograms from zenodo servers.
         try:
             O3_data_row.download(download_path=full_dset_path)
-        except (HTTPError, URLError) as e:
+        except (HTTPError, URLError, RemoteDisconnected) as e:
             print(f"Download of samples with id {id_} failed.")
             files_to_remove = [
                 f"{full_dset_path}/{det}_{id_}_spectrogram_{view}.png" for view in views
@@ -124,7 +125,9 @@ if __name__ == "__main__":
 
     confidence = args.ml_confidence if args.random_samples else 0
     detector_dfs = {
-        detector: O3_data.filter(f"ifo=={detector}", f"ml_confidence>={confidence}").to_pandas()
+        detector: O3_data.filter(f"ifo=={detector}", f"ml_confidence>={confidence}")
+        .to_pandas()
+        .drop_duplicates(subset=["event_time", "ifo", "ml_label", "ml_confidence"])
         for detector in detectors
     }
 
