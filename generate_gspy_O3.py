@@ -21,7 +21,28 @@ img_size = (170, 140)  # (width, height)
 left, top, right, bottom = 105, 66, 671, 532
 
 
-def choose_samples():
+def choose_most_confident_samples():
+    """Choose the desired number of of most confident glitches for each class and detector.
+    The gravityspy_ids and labels are saved in a meta_data file."""
+
+    print("Selecting samples...")
+    meta_data = pd.DataFrame(columns=["gravityspy_id", "ifo", "label"])
+    for detector in detectors:
+        detector_df = detector_dfs[detector]
+        most_conf_df = (
+            detector_df.sort_values("ml_confidence", ascending=False)
+            .groupby("ml_label")
+            .head(args.num_samples)
+            .rename(columns={"ml_label": "label"})
+        )[["gravityspy_id", "ifo", "label"]]
+
+        meta_data = pd.concat([meta_data, most_conf_df])
+
+    meta_data.to_csv(meta_data_path, index=False)
+    print("Sample selection saved.")
+
+
+def choose_random_samples():
     """Choose the desired number of glitches for each class and detector.
     The gravityspy_ids and labels are saved in a meta_data file."""
 
@@ -85,6 +106,7 @@ def generate_samples():
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--new_samples", default=True, action=argparse.BooleanOptionalAction)
+    parser.add_argument("--random_samples", default=False, action=argparse.BooleanOptionalAction)
     parser.add_argument("--num_samples", type=int, default=5)
     parser.add_argument("--ml_confidence", type=float, default=0.95)
     parser.add_argument("--dset_version", type=int, default=1)
@@ -99,12 +121,13 @@ if __name__ == "__main__":
 
     O3_files = [f"{DATASET_PATH}/{detector}_{obs_run}.csv" for detector in detectors]
     O3_data = GravitySpyTable.read(O3_files)
+
+    confidence = args.ml_confidence if args.random_samples else 0
     detector_dfs = {
-        detector: O3_data.filter(
-            f"ifo=={detector}", f"ml_confidence>={args.ml_confidence}"
-        ).to_pandas()
+        detector: O3_data.filter(f"ifo=={detector}", f"ml_confidence>={confidence}").to_pandas()
         for detector in detectors
     }
+
     labels = sorted(np.unique(O3_data["ml_label"]))
 
     if args.new_samples:
@@ -113,7 +136,10 @@ if __name__ == "__main__":
         if os.path.exists(meta_data_path):
             print("Meta data file already exists. Aborting...")
             sys.exit(0)
-        choose_samples()
+        if args.random_samples:
+            choose_random_samples()
+        else:
+            choose_most_confident_samples()
     else:
         if not os.path.exists(meta_data_path):
             print("Meta data file does not exist. Aborting...")
