@@ -23,8 +23,12 @@ def get_val_preds(learner):
     return get_preds(learner)
 
 
-def plot_CM_PR(cm, y_true, y_pred, vocab, figsize=(10, 10)):
+def plot_CM_PR(cm, y_true, y_pred, vocab, normalize=False, figsize=(10, 10)):
     """Plot confusion matrix with precision and recall for each class at the bottom,"""
+    if normalize:
+        assert any(y_true) and any(y_pred), "predicted labels or targets missing"
+        cm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis]
+            
     fig = plt.figure(figsize=figsize)
     gs = gridspec.GridSpec(2, 1, height_ratios=[9, 1])
 
@@ -37,7 +41,7 @@ def plot_CM_PR(cm, y_true, y_pred, vocab, figsize=(10, 10)):
     thresh = cm.max() / 2.0
     for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
         if cm[i, j] >= 0.005:
-            coeff = f"{cm[i, j]}"
+            coeff = f"{cm[i, j]:.2f}" if normalize else f"{cm[i, j]}"
             plt.text(
                 j,
                 i,
