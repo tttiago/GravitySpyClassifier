@@ -22,7 +22,6 @@ def get_val_preds(learner):
     Get predictions and targets for the validation set."""
     return get_preds(learner)
 
-
 def plot_CM_PR(cm, y_true, y_pred, vocab, normalize=False, figsize=(10, 10)):
     """Plot confusion matrix with precision and recall for each class at the bottom,"""
     if normalize:
@@ -89,6 +88,35 @@ def plot_CM_PR(cm, y_true, y_pred, vocab, normalize=False, figsize=(10, 10)):
 
     return fig, [ax0, ax1]
 
+def plot_CM_chirp_line(ax, cm, vocab=None, normalize=False, y_true=None, y_pred=None):
+    """Plot the Chirp line from the confusion matrix."""
+    im = ax.imshow(cm[4].reshape(1, 22), interpolation="nearest", cmap="Blues", aspect=0.85 if normalize else 1)
+
+    tick_marks = np.arange(len(vocab))
+    ax.set_xticks(tick_marks)
+    ax.set_xticklabels(vocab, rotation=45, ha="left", fontsize="large")
+    ax.set_yticks([0])
+    ax.set_yticklabels([vocab[4]], fontsize="large")
+    thresh = cm.max() / 2.0
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        if cm[i, j] >= 0.005:
+            coeff = f"{cm[i, j]:.2f}" if normalize else f"{cm[i, j]}"
+            ax.text(
+                j,
+                0,
+                coeff,
+                horizontalalignment="center",
+                verticalalignment="center",
+                color="white" if cm[i, j] > thresh else "black",
+            )
+    ax.tick_params(axis="x", length=0, top=True, bottom=False, labeltop=True, labelbottom=False)
+    ax.yaxis.set_tick_params(length=0)
+    ax.yaxis.set_label_position("right")
+    ax.set_ylabel("Actual Class", labelpad=30, fontsize="x-large")
+    ax.set_xlabel("Predicted Class", labelpad=10, fontsize="x-large")
+    ax.grid(False)
+
+    return ax
 
 def plot_top_losses_glitches(
     interp,
