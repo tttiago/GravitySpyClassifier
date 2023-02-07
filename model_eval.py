@@ -88,7 +88,7 @@ def plot_CM_PR(cm, y_true, y_pred, vocab, normalize=False, figsize=(10, 10)):
 
     return fig, [ax0, ax1]
 
-def plot_CM_chirp_line(cm, vocab=None, normalize=False, y_true=None, y_pred=None, figsize=(12, 12)):
+def plot_CM_chirp_line(cm, vocab=None, normalize=False, figsize=(12, 12)):
     """Plot confusion matrix."""
 
     fig = plt.figure(figsize=figsize)
