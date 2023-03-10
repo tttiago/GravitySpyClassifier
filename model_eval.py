@@ -191,6 +191,7 @@ def plot_top_losses_gws(
     show_label=True,
     show_pred=True,
     show_loss=False,
+    total_masses=None,
     nrows=4,
     ncols=4,
     figsize=(11, 11),
@@ -219,8 +220,10 @@ def plot_top_losses_gws(
         # ax.set_yticks(freq_pos, [f'{freq:.0f}' for freq in freqs]);
 
         title = [r"$\bf{" + ds.events[idx].replace("_", " - ") + "}$"]
-        if show_label:
+        if show_label and not total_masses:
             title.append(f"label: {true_label}")
+        if total_masses:
+            title.append(f"total_mass: {total_masses[idx]}")
         if show_pred:
             title.append(f"pred: {vocab[y_preds[idx]]}")
         if show_loss:
