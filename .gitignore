@@ -4,9 +4,12 @@ __pycache__/
 .ipynb_checkpoints/
 old/
 datasets/
+datasets
 models/
+models
 wandb/
 configs/config_99*
 wandb_key.txt
 Untitled*.ipynb
 run_random*
+
